@@ -6,18 +6,32 @@ import {
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import Editor from "./Editor";
+import { useTheme } from "@/providers/theme-provider";
 
 function EditorContainer() {
   const [html, setHtml] = useLocalStorage("html", "");
   const [css, setCss] = useLocalStorage("css", "");
   const [javascript, setJavascript] = useLocalStorage("javascript", "");
   const [compiledContent, setCompiledContent] = useState("");
+  const { theme } = useTheme();
+  const color =
+    theme === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : theme;
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCompiledContent(`
         <html>
           <body>${html}</body>
-          <style>${css}</style>
+          <style>
+          body {
+            background-color: ${color === "dark" ? "black" : "white"};
+            color: ${color === "dark" ? "white" : "black"};
+          }
+          ${css}</style>
           <script>${javascript}</script>
         </html>
       `);

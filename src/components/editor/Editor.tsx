@@ -1,3 +1,4 @@
+import { useTheme } from "@/providers/theme-provider";
 import { Editor as CodeMirror, EditorChange } from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/css/css";
@@ -22,6 +23,14 @@ function Editor({ language, displayName, value, onChange }: ICodeEditor) {
     onChange(value);
   }
 
+  const { theme } = useTheme();
+  const color =
+    theme === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : theme;
+
   return (
     <div>
       <p className="p-2">{displayName}</p>
@@ -33,7 +42,7 @@ function Editor({ language, displayName, value, onChange }: ICodeEditor) {
           options={{
             lineWrapping: true,
             mode: language,
-            theme: "tomorrow-night-eighties",
+            theme: color === "dark" ? "tomorrow-night-eighties" : "",
             lineNumbers: true,
           }}
         />
