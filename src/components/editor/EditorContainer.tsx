@@ -4,7 +4,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Editor from "./Editor";
 import { useTheme } from "@/providers/theme-provider";
 
@@ -14,12 +14,15 @@ function EditorContainer() {
   const [javascript, setJavascript] = useLocalStorage("javascript", "");
   const [compiledContent, setCompiledContent] = useState("");
   const { theme } = useTheme();
-  const color =
-    theme === "system"
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : theme;
+  const color = useMemo(
+    () =>
+      theme === "system"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : theme,
+    [theme]
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -91,7 +94,7 @@ function EditorContainer() {
             width="100%"
             height="100%"
             style={{
-              backgroundColor: "white",
+              backgroundColor: color === "dark" ? "black" : "white",
             }}
           />
         </div>
