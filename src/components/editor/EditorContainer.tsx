@@ -3,9 +3,9 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import Editor from "./Editor";
-import { useEffect, useState } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useEffect, useState } from "react";
+import Editor from "./Editor";
 
 function EditorContainer() {
   const [html, setHtml] = useLocalStorage("html", "");
@@ -74,9 +74,11 @@ function EditorContainer() {
             srcDoc={compiledContent}
             title="output"
             sandbox="allow-scripts"
-            frameBorder="0"
             width="100%"
             height="100%"
+            style={{
+              backgroundColor: "white",
+            }}
           />
         </div>
       </ResizablePanel>
